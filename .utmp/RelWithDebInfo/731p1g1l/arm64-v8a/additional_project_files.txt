@@ -1,0 +1,17 @@
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/GAToUnityCallbacks.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/MacroEnd.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/MacroHeaderBegin.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/MacroSourceBegin.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAApplication.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAConfiguration.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGADebug.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAEvents.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAInput.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGASoftKeyboard.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGASoftKeyboardCallbacks.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGATypes.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAVersion.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UnityToGACallbacks.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UnityToGAConfigurationCallbacks.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UnityToGAKeyEventCallbacks.h
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UnityToGAMotionEventCallbacks.h

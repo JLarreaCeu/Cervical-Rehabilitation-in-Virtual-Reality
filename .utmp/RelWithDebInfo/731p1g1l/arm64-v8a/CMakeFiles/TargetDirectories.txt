@@ -1,0 +1,5 @@
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/.utmp/RelWithDebInfo/731p1g1l/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/.utmp/RelWithDebInfo/731p1g1l/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/.utmp/RelWithDebInfo/731p1g1l/arm64-v8a/GameActivity/CMakeFiles/game.dir
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/.utmp/RelWithDebInfo/731p1g1l/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+/Users/jorgelarrea/Desktop/CEU/8Octavo cuatri/Proyectos 1/Gaze/.utmp/RelWithDebInfo/731p1g1l/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
