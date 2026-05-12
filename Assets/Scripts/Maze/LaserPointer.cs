@@ -46,7 +46,7 @@ public class LaserPointer : MonoBehaviour
 
     float      _u, _v;
     Quaternion _calibRot;
-    Quaternion _displayCalib; // head rotation when maze was displayed — used by guide ring
+    Quaternion _displayCalib; // head rotation when maze appeared, used for guide ring offset
     bool       _calibrated;
     Material   _dotMat;
     float      _dwellTimer;
@@ -111,7 +111,7 @@ public class LaserPointer : MonoBehaviour
         IsOnWall         = false;
         _dwellTimer      = 0f;
         _waitingForCenter = true;
-        // Hide the dot until the player centers their gaze — forces neutral spine position.
+        // Hide dot until player centers gaze - forces a neutral starting head position.
         if (laserDot != null) laserDot.gameObject.SetActive(false);
         PositionDot();
         PositionStar();
@@ -130,12 +130,11 @@ public class LaserPointer : MonoBehaviour
     {
         if (!_calibrated) return;
 
-        // Center-wait phase: guide ring tracks absolute gaze so the player can see
-        // exactly where they're looking. Once they look at maze center, _displayCalib
-        // locks in at that neutral head rotation, ensuring full range of motion.
+        // Center-wait: guide ring tracks raw gaze so the player knows where to look.
+        // Once they hit center, lock _displayCalib as the neutral reference.
         if (_waitingForCenter)
         {
-            _displayCalib = ReadHeadRot(); // absolute tracking — no delta offset
+            _displayCalib = ReadHeadRot(); // raw position, no delta
 
             float gazeU, gazeV;
             ComputeGazeUV(out gazeU, out gazeV);
@@ -143,7 +142,7 @@ public class LaserPointer : MonoBehaviour
             float dx = gazeU - 0.5f, dy = gazeV - 0.5f;
             if (dx * dx + dy * dy < CENTER_RADIUS * CENTER_RADIUS)
             {
-                // Player is centered — lock calibration and reveal the dot.
+                // Player centered, lock calibration and show the dot.
                 _waitingForCenter = false;
                 if (laserDot != null) laserDot.gameObject.SetActive(true);
                 PositionDot();
@@ -211,7 +210,7 @@ public class LaserPointer : MonoBehaviour
 
         if (gazeOnDot)
         {
-            // Instant grab — guide ring touches dot, they merge, navigation begins.
+            // Ring reached the dot, grab instantly.
             IsGrabbed = true;
             if (_dotMat != null) _dotMat.color = dotNormalColor;
             if (laserDot != null) laserDot.localScale = Vector3.one * 0.03f;
@@ -280,10 +279,8 @@ public class LaserPointer : MonoBehaviour
         v = _v;
         if (mazePlane == null) return;
 
-        // Use head rotation DELTA from the display calibration so the guide ring
-        // moves correctly even when the maze plane is parented to the camera.
-        // Absolute head direction always points at maze center when maze follows
-        // the camera, so we use the delta instead.
+        // Use head rotation delta from display calibration. Absolute direction always
+        // points at maze center when the plane follows the camera, so delta is what we need.
         Quaternion delta   = Quaternion.Inverse(_displayCalib) * ReadHeadRot();
         Vector3    gazeDir = delta * Vector3.forward;
 

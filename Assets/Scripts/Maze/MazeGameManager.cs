@@ -181,8 +181,7 @@ public class MazeGameManager : MonoBehaviour
         if (idx >= mazeTextures.Length) return;
         var tex = mazeTextures[idx];
 
-        // Re-center maze and timer in front of wherever the player is currently looking.
-        // This runs on every maze load (including the first) so each puzzle starts centered.
+        // Re-center maze and timer on every load so each puzzle starts where the player is looking.
         Camera cam = Camera.main;
         if (cam != null && mazePlaneRenderer != null)
         {
@@ -277,8 +276,7 @@ public class MazeGameManager : MonoBehaviour
     {
         Camera cam = Camera.main;
         if (cam == null) return;
-        // Flatten Y so the canvas is always upright — player can look around to aim.
-        // Matching the same pattern used by MenuPositioner in MainMenu.
+        // Flatten Y so the canvas stays upright - player looks around to aim.
         Vector3 fwd = cam.transform.forward;
         fwd.y = 0f;
         if (fwd.sqrMagnitude < 0.001f) fwd = Vector3.forward;

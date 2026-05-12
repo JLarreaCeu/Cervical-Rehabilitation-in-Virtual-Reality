@@ -95,7 +95,7 @@ public class ForestGameController : MonoBehaviour
 
     void LateUpdate()
     {
-        // Lock X so movement is strictly forward/backward — never sideways.
+        // Lock X so movement stays strictly forward/backward.
         var pos = transform.position;
         pos.x = _startX;
         transform.position = pos;
@@ -194,8 +194,7 @@ public class ForestGameController : MonoBehaviour
         var cvGO  = new GameObject("CrosshairCanvas");
         cvGO.transform.SetParent(transform);
         var cv    = cvGO.AddComponent<Canvas>();
-        // WorldSpace so the crosshair renders correctly in both eyes in VR.
-        // Position is updated every LateUpdate to stay centered in front of the camera.
+        // WorldSpace renders correctly in both eyes. Position updated each LateUpdate.
         cv.renderMode   = RenderMode.WorldSpace;
         cv.sortingOrder = 100;
         _crosshairCanvasT = cvGO.transform;
