@@ -1951,7 +1951,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c998a2f4a28ce480cb30cbcbcb851aaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ForestGameController
-  walkSpeed: 1.8
+  walkSpeed: 4
   gazeDistance: 12
   gazeTimeDefault: 1
 --- !u!114 &122609705
@@ -2199,7 +2199,7 @@ MonoBehaviour:
   isPlayAgain: 0
   menuSceneName: MainMenu
   gameSceneName: Easy
-  progressIndicator: {fileID: 315522528}
+  progressIndicator: {fileID: 315522529}
   normalColor: {r: 0.05, g: 0.15, b: 0.35, a: 1}
   hoveredColor: {r: 0.08, g: 0.22, b: 0.5, a: 1}
 --- !u!65 &130438113
@@ -4457,14 +4457,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 315522527}
-  - component: {fileID: 315522528}
+  - component: {fileID: 315522529}
   m_Layer: 0
   m_Name: ProgressRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &315522527
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4487,7 +4487,7 @@ RectTransform:
   m_AnchoredPosition: {x: -10, y: 0}
   m_SizeDelta: {x: 44, y: 44}
   m_Pivot: {x: 1, y: 0.5}
---- !u!114 &315522528
+--- !u!114 &315522529
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12094,7 +12094,7 @@ MonoBehaviour:
   isPlayAgain: 1
   menuSceneName: MainMenu
   gameSceneName: Easy
-  progressIndicator: {fileID: 1603967787}
+  progressIndicator: {fileID: 1603967788}
   normalColor: {r: 0.07, g: 0.22, b: 0.12, a: 1}
   hoveredColor: {r: 0.12, g: 0.35, b: 0.18, a: 1}
 --- !u!65 &865118890
@@ -22028,14 +22028,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1603967786}
-  - component: {fileID: 1603967787}
+  - component: {fileID: 1603967788}
   m_Layer: 0
   m_Name: ProgressRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1603967786
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22058,7 +22058,7 @@ RectTransform:
   m_AnchoredPosition: {x: -10, y: 0}
   m_SizeDelta: {x: 44, y: 44}
   m_Pivot: {x: 1, y: 0.5}
---- !u!114 &1603967787
+--- !u!114 &1603967788
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

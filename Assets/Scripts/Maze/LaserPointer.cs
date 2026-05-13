@@ -40,9 +40,11 @@ public class LaserPointer : MonoBehaviour
     [Range(0f, 1f)]
     public float wallThreshold = 0.45f;
 
-    public bool IsOnWall  { get; private set; }
-    public bool IsAtExit  { get; private set; }
-    public bool IsGrabbed { get; private set; }
+    public bool IsOnWall    { get; private set; }
+    public bool IsAtExit    { get; private set; }
+    public bool IsGrabbed   { get; private set; }
+    /// <summary>True for exactly one frame when the dot first enters a wall.</summary>
+    public bool JustHitWall { get; private set; }
 
     float      _u, _v;
     Quaternion _calibRot;
@@ -50,6 +52,7 @@ public class LaserPointer : MonoBehaviour
     bool       _calibrated;
     Material   _dotMat;
     float      _dwellTimer;
+    bool       _wasOnWall;    // previous-frame wall state, used to detect new collisions
     bool       _waitingForCenter; // true until player looks at maze center after each maze load
     const float CENTER_RADIUS = 0.12f; // UV-space radius around (0.5,0.5) that counts as centered
 
@@ -130,23 +133,52 @@ public class LaserPointer : MonoBehaviour
     {
         if (!_calibrated) return;
 
-        // Center-wait: guide ring tracks raw gaze so the player knows where to look.
-        // Once they hit center, lock _displayCalib as the neutral reference.
+        // Center-wait: guide ring tracks absolute gaze so the player knows where to look.
+        // Uses a world-space raycast against the maze plane — no dependency on _displayCalib —
+        // so the check is always accurate regardless of head orientation.
+        // Once they look at maze center, _displayCalib is locked as the neutral reference.
         if (_waitingForCenter)
         {
-            _displayCalib = ReadHeadRot(); // raw position, no delta
-
-            float gazeU, gazeV;
-            ComputeGazeUV(out gazeU, out gazeV);
-
-            float dx = gazeU - 0.5f, dy = gazeV - 0.5f;
-            if (dx * dx + dy * dy < CENTER_RADIUS * CENTER_RADIUS)
+            if (exitStar != null)
             {
-                // Player centered, lock calibration and show the dot.
-                _waitingForCenter = false;
-                if (laserDot != null) laserDot.gameObject.SetActive(true);
-                PositionDot();
+                float pulse = 1f + 0.2f * Mathf.Sin(Time.time * 5f);
+                exitStar.localScale = Vector3.one * 0.06f * pulse;
+                PositionStar();
             }
+
+            float absU, absV;
+            if (ComputeAbsoluteGazeUV(out absU, out absV))
+            {
+                // Move guide ring to where the player is actually looking.
+                if (guideRing != null && mazePlane != null)
+                {
+                    if (!guideRing.gameObject.activeSelf)
+                        guideRing.gameObject.SetActive(true);
+
+                    float ringPulse = 1f + 0.35f * Mathf.Sin(Time.time * 3.5f);
+                    guideRing.localScale = Vector3.one * ringPulse;
+
+                    Vector3 localPos = new Vector3(absU - 0.5f, absV - 0.5f, -0.025f);
+                    guideRing.position = mazePlane.TransformPoint(localPos);
+                    guideRing.rotation = mazePlane.rotation;
+                }
+
+                float dx = absU - 0.5f, dy = absV - 0.5f;
+                if (dx * dx + dy * dy < CENTER_RADIUS * CENTER_RADIUS)
+                {
+                    // Player is truly looking at maze center — lock calibration NOW.
+                    _displayCalib     = ReadHeadRot();
+                    _waitingForCenter = false;
+                    if (laserDot != null) laserDot.gameObject.SetActive(true);
+                    PositionDot();
+                    // Fall through to normal update this frame.
+                    goto NormalUpdate;
+                }
+            }
+
+            JustHitWall = false;
+            _wasOnWall  = false;
+            return;
         }
 
         if (exitStar != null)
@@ -188,10 +220,12 @@ public class LaserPointer : MonoBehaviour
             }
         }
 
-        if (_waitingForCenter) return; // dot hidden, navigation blocked until centered
+        NormalUpdate:
 
         if (!IsGrabbed)
         {
+            JustHitWall = false;
+            _wasOnWall  = false;
             UpdateUngrabbed();
             return;
         }
@@ -259,7 +293,9 @@ public class LaserPointer : MonoBehaviour
             if (blockU && blockV) break;
         }
 
-        IsOnWall = hitWall;
+        IsOnWall    = hitWall;
+        JustHitWall = hitWall && !_wasOnWall; // one-frame pulse on wall entry
+        _wasOnWall  = hitWall;
 
         if (_dotMat != null)
             _dotMat.color = IsOnWall ? dotWallColor : dotNormalColor;
@@ -271,6 +307,39 @@ public class LaserPointer : MonoBehaviour
         float ex = _u - exitU;
         float ey = _v - exitV;
         IsAtExit = (ex * ex + ey * ey) < (exitRadius * exitRadius);
+    }
+
+    /// <summary>
+    /// World-space raycast of camera forward onto the maze plane.
+    /// Independent of _displayCalib — always returns where the player truly looks.
+    /// Returns false if the ray misses or the plane is not set up.
+    /// </summary>
+    bool ComputeAbsoluteGazeUV(out float u, out float v)
+    {
+        u = 0.5f; v = 0.5f;
+        if (mazePlane == null) return false;
+
+        Camera cam = Camera.main;
+        if (cam == null) return false;
+
+        Vector3 planeNormal = mazePlane.forward;
+        Vector3 planeCenter = mazePlane.position;
+        Vector3 rayOrigin   = cam.transform.position;
+        Vector3 rayDir      = cam.transform.forward;
+
+        float denom = Vector3.Dot(rayDir, planeNormal);
+        if (Mathf.Abs(denom) < 0.001f) return false;
+
+        float t = Vector3.Dot(planeCenter - rayOrigin, planeNormal) / denom;
+        if (t < 0f) return false; // plane is behind the camera
+
+        Vector3 hit = rayOrigin + rayDir * t;
+
+        // Convert to local plane coordinates (-0.5..0.5 on each axis for a unit quad).
+        Vector3 localHit = mazePlane.InverseTransformPoint(hit);
+        u = Mathf.Clamp01(localHit.x + 0.5f);
+        v = Mathf.Clamp01(localHit.y + 0.5f);
+        return true;
     }
 
     void ComputeGazeUV(out float u, out float v)

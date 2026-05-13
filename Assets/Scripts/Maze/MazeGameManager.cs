@@ -21,10 +21,12 @@ public class MazeGameManager : MonoBehaviour
 
     [Header("UI — Side Timer")]
     public TMPro.TextMeshProUGUI timerText;
+    public TMPro.TextMeshProUGUI collisionText;
     public GameObject            sideTimerCanvas;
 
     [Header("UI — Results")]
     public GameObject            resultsCanvas;
+    public TMPro.TextMeshProUGUI resultsTitleText;  // "Great work!" or "Oh oh!" depending on score
     public TMPro.TextMeshProUGUI finalMazesText;
     public TMPro.TextMeshProUGUI finalTimeText;
 
@@ -36,6 +38,9 @@ public class MazeGameManager : MonoBehaviour
     int[]   _order;
     float   _timeRemaining;
     int     _mazesSolved;
+    int     _score;
+    int     _wallHits;
+    int     _mazeWallHits; // resets each maze
     bool    _running;
     bool    _exitCooldown;
     bool    _waitingForFirstGrab;
@@ -93,6 +98,9 @@ public class MazeGameManager : MonoBehaviour
 
         _timeRemaining       = Mathf.Clamp(minutes, 1, 5) * 60f;
         _mazesSolved         = 0;
+        _score               = 0;
+        _wallHits            = 0;
+        _mazeWallHits        = 0;
         _slot                = 0;
         _running             = true;
         _exitCooldown        = false;
@@ -150,10 +158,26 @@ public class MazeGameManager : MonoBehaviour
             return;
         }
 
+        // Wall hit scoring — only counts the first frame of contact, not sustained contact.
+        if (cursor != null && cursor.JustHitWall)
+        {
+            _wallHits++;
+            _mazeWallHits++;
+            _score = Mathf.Max(0, _score - 10); // floor at 0
+
+            // 10 collisions on this maze → reset ball to start of same maze.
+            if (_mazeWallHits >= 10)
+            {
+                _mazeWallHits = 0;
+                cursor.ResetToStart();
+            }
+        }
+
         if (!_exitCooldown && cursor != null && cursor.IsAtExit)
         {
             _exitCooldown = true;
             _mazesSolved++;
+            _score += 100;
             _slot++;
 
             if (_slot >= 5)
@@ -210,6 +234,9 @@ public class MazeGameManager : MonoBehaviour
                 mazePlaneRenderer.sharedMaterial.SetTexture("_BaseMap", tex);
         }
 
+        // Reset per-maze collision counter for the new puzzle.
+        _mazeWallHits = 0;
+
         // SetMaze recalibrates _displayCalib so the guide ring starts centered on the new maze.
         if (cursor != null) cursor.SetMaze(tex);
     }
@@ -229,6 +256,8 @@ public class MazeGameManager : MonoBehaviour
         }
         if (mazeCountText != null)
             mazeCountText.text = "Mazes\n" + _mazesSolved;
+        if (collisionText != null)
+            collisionText.text = _mazeWallHits.ToString();
     }
 
     void ShowResults()
@@ -244,10 +273,12 @@ public class MazeGameManager : MonoBehaviour
             resultsCanvas.SetActive(true);
         }
 
+        if (resultsTitleText != null)
+            resultsTitleText.text = _score == 0 ? "Oh oh!" : "Great work!";
         if (finalMazesText != null)
-            finalMazesText.text = "Mazes solved: " + _mazesSolved;
+            finalMazesText.text = "Mazes solved: " + _mazesSolved + "\nScore: " + _score + " pts";
         if (finalTimeText != null)
-            finalTimeText.text = "Great work!";
+            finalTimeText.text = "Wall hits: " + _wallHits;
     }
 
     void SetAllCanvases(bool active)

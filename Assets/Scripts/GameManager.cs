@@ -125,6 +125,10 @@ public class GameManager : MonoBehaviour
 
         if (resultsCanvas != null)
         {
+            // Deparent from camera so the canvas stays fixed in world space
+            // (if still parented to camera it would follow head movement and feel "stuck on face").
+            resultsCanvas.transform.SetParent(null, false);
+
             var mainCam = Camera.main;
             if (mainCam != null)
             {

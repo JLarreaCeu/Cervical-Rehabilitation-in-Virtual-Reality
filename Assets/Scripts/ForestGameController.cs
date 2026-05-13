@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.Controls;
 [DisallowMultipleComponent]
 public class ForestGameController : MonoBehaviour
 {
-    public float walkSpeed = 2.5f;
+    public float walkSpeed = 8f;
 
     public float gazeDistance    = 12f;
     public float gazeTimeDefault = 1.0f;
